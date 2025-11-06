@@ -1,64 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../Events.css'; 
 
 import eventsHeroImage from '../assets/6.png';
 import joinSectionImage from '../assets/3.jpg';
-// import digitalMarketingImage from '../assets/5.jpg';
 import coffee_and_connect from '../assets/coffee-and-connect-event.jpg';
 
-
-
-const upcomingEventsData = [
-  // {
-  //   image: digitalMarketingImage,
-  //   title: 'Exciting event with Wom(en) Kuwait',
-  //   date: 'Launching this October',
-  //   description: 'Wom(en) Kuwait’s first event is launching this October. With this event, we will start our journey of connecting ambitious, curious women all over Kuwait. As we get closer to the launch date, we will release more information. Please keep watching this space. We don’t want you to miss out on a chance to meet the brilliant minds of Kuwait.',
-  //   location: 'To be determined',
-  // },
-  {
-    image: coffee_and_connect,
-    title: 'Coffee and Connect Event',
-    date: 'Coming up this November',
-    description: "Join us for an afternoon dedicated to genuine connection. This isn't just about coffee; it's an activity designed to foster warm conversations and build community in a relaxed and welcoming environment. Start your day by networking with like-minded women and enjoying the warmth of good company.",
-    location: 'To be determined',
-  },
-  // {
-  //   image: coffee_and_connect,
-  //   title: 'Luxury Networking Night',
-  //   date: 'Coming up this December',
-  //   description: "Experience an evening of pure elegance designed for high-level networking and connection. Mingle with inspiring women as you enjoy sophisticated mocktails and music. This event is a premier opportunity to forge meaningful connections in a chic and exclusive setting.",
-  //   location: 'To be determined',
-  // },
-  // {
-  //   image: coffee_and_connect,
-  //   title: "Vision Board Party",
-  //   date: 'Coming up this February',
-  //   description: "Tap into your creativity and set your intentions for the future. This hands-on activity involves visualizing your next chapter and creating a powerful vision board. More importantly, it's a night to dream out loud in a supportive space, connecting with others as you share your goals and aspirations.",
-  //   location: 'To be determined',
-  // },
-  // {
-  //   image: coffee_and_connect,
-  //   title: "Painting and Pottery",
-  //   date: 'Coming up this March',
-  //   description: "Unleash your inner artist in this calming, creative session. Whether you choose painting or pottery, this hands-on activity is a chance to express yourself through colors and clay. Connect with fellow members in a relaxed environment, finding inner stillness and sparking new friendships through shared creativity.",
-  //   location: 'To be determined',
-  // },
-  // {
-  //   image: coffee_and_connect,
-  //   title: "Pop-Up Market for Women Entrepreneurs",
-  //   date: 'Coming up this April',
-  //   description: "Energize your mind and body! This morning is all about movement, offering dynamic activities like yoga and cycling. Join other Wom(en) Kuwait members to stretch, move, and awaken your body with rhythm and flow. It's a perfect way to connect over shared wellness goals and start your day strong.",
-  //   location: 'To be determined',
-  // },
-  // {
-  //   image: coffee_and_connect,
-  //   title: "Public Speaking: Women Who Inspire",
-  //   date: 'Coming up this May',
-  //   description: "Prepare to be inspired. This event features powerful, unfiltered stories from women who have built, pivoted, and found their way. It’s more than just a lecture; it's a deep connection activity, hearing stories straight from the heart. Network with the speakers and other members moved by these honest journeys.",
-  //   location: 'To be determined',
-  // },
-];
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const whyJoinData = [
     {
@@ -83,19 +31,58 @@ const whyJoinData = [
 const EventDetailModal = ({ event, onClose }) => {
   if (!event) return null;
 
+  const formatEventDate = (dateString) => {
+    if (!dateString) return 'Date TBD';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const formatEventTime = (timeString) => {
+    if (!timeString) return '';
+    // Format time (assuming HH:MM format)
+    const [hours, minutes] = timeString.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${ampm}`;
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={onClose}>&times;</button>
-        <img src={event.image} alt={event.title} className="modal-image" />
+        {event.image && (
+          <img src={event.image} alt={event.title} className="modal-image" />
+        )}
         <div className="modal-text-content">
           <h2 className="modal-title">{event.title}</h2>
-          <p className="modal-date">{event.date}</p>
+          <p className="modal-date">
+            {formatEventDate(event.date)}
+            {event.time && ` • ${formatEventTime(event.time)}`}
+          </p>
           <p className="modal-description">{event.description}</p>
-          <div className="modal-location">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            <span>{event.location}</span>
-          </div>
+          {event.location && (
+            <div className="modal-location">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <p><span className="modal-info-label">Location:</span>{event.location}</p>
+            </div>
+          )}
+          {event.activityIncludes && (
+            <div className="modal-activity-includes">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <p><span className="modal-info-label">Activity Includes:</span>{event.activityIncludes}</p>
+            </div>
+          )}
+          {event.entryFees && (
+            <div className="modal-entry-fees">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              <p><span className="modal-info-label">Entry Fees:</span>{event.entryFees}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -106,6 +93,87 @@ const EventDetailModal = ({ event, onClose }) => {
 
 const Events = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${API_URL}/api/events`);
+      setEvents(response.data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching events:', err);
+      setError('Failed to load events. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatEventDate = (dateString) => {
+    if (!dateString) return 'Date TBD';
+    const date = new Date(dateString);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (date < today) {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+    
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const getImageUrl = (bannerImage) => {
+    if (!bannerImage) return coffee_and_connect; // Default fallback image
+    if (bannerImage.startsWith('http://') || bannerImage.startsWith('https://')) {
+      return bannerImage;
+    }
+    return `${API_URL}${bannerImage}`;
+  };
+
+  const transformEventForUI = (event) => {
+    return {
+      ...event,
+      image: getImageUrl(event.bannerImage),
+      location: event.location || 'Location TBD'
+    };
+  };
+
+  // Separate upcoming and past events
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const upcomingEvents = events
+    .filter(event => {
+      if (!event.date) return true; // Include events without date as upcoming
+      const eventDate = new Date(event.date);
+      eventDate.setHours(0, 0, 0, 0);
+      return eventDate >= today;
+    })
+    .map(transformEventForUI);
+
+  // Past events can be used for future "Past Events" section
+  // const pastEvents = events
+  //   .filter(event => {
+  //     if (!event.date) return false;
+  //     const eventDate = new Date(event.date);
+  //     eventDate.setHours(0, 0, 0, 0);
+  //     return eventDate < today;
+  //   })
+  //   .map(transformEventForUI);
 
   return (
     <div className="events-page">
@@ -149,23 +217,37 @@ const Events = () => {
       <section className="events-list-section">
         <div className="events-list-container">
           <h2 className="events-list-title">Upcoming Events</h2>
-          <div className="events-grid">
-            {upcomingEventsData.map((event, index) => (
-              <div 
-                className="event-card upcoming" 
-                key={index}
-                onClick={() => setSelectedEvent(event)} // Added onClick here
-              >
-                <div className="event-card-image-container">
-                  <img src={event.image} alt={event.title} className="event-card-image" />
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>
+              Loading events...
+            </div>
+          ) : error ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: '#dc3545' }}>
+              {error}
+            </div>
+          ) : upcomingEvents.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>
+              No upcoming events at the moment. Check back soon!
+            </div>
+          ) : (
+            <div className="events-grid">
+              {upcomingEvents.map((event) => (
+                <div 
+                  className="event-card upcoming" 
+                  key={event._id}
+                  onClick={() => setSelectedEvent(event)}
+                >
+                  <div className="event-card-image-container">
+                    <img src={event.image} alt={event.title} className="event-card-image" />
+                  </div>
+                  <div className="event-card-content">
+                    <h3 className="event-card-title">{event.title}</h3>
+                    <p className="event-card-date">{formatEventDate(event.date)}</p>
+                  </div>
                 </div>
-                <div className="event-card-content">
-                  <h3 className="event-card-title">{event.title}</h3>
-                  <p className="event-card-date">{event.date}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section> 
       

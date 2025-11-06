@@ -5,29 +5,33 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    bannerImage: {
+        type: String,
+        required: false
+    },
+    date: {
+        type: Date,
+        required: false
+    },
+    time: {
+        type: String, 
+        required: false
+    },
+    entryFees: {
+        type: String,
+        required: false
+    },
     description: {
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        required: true
-    },
-    time: {
-        type: String, 
-        required: true
-    },
-    type: { 
+    location: {
         type: String,
-        required: true
+        required: false
     },
-    imageUrl: { 
+    activityIncludes: {
         type: String,
-        
-    },
-    isPastEvent: {
-        type: Boolean,
-        default: false
+        required: false
     }
 }, { timestamps: true }); 
 module.exports = mongoose.model('Event', EventSchema);

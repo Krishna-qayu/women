@@ -39,17 +39,18 @@ router.get('/:id', async (req, res) => {
 // @desc    Create an event
 // @access  Private (you'd add authentication middleware here later)
 router.post('/', async (req, res) => {
-    const { title, description, date, time, type, imageUrl } = req.body;
+    const { title, bannerImage, date, time, entryFees, description, location, activityIncludes } = req.body;
 
     try {
         const newEvent = new Event({
             title,
+            bannerImage,
+            date: date || null,
+            time: time || null,
+            entryFees: entryFees || null,
             description,
-            date,
-            time,
-            type,
-            imageUrl
-            // isPastEvent will be derived from the date on the frontend or set manually if needed
+            location: location || null,
+            activityIncludes: activityIncludes || null
         });
 
         const event = await newEvent.save();
@@ -64,17 +65,18 @@ router.post('/', async (req, res) => {
 // @desc    Update an event
 // @access  Private
 router.put('/:id', async (req, res) => {
-    const { title, description, date, time, type, imageUrl, isPastEvent } = req.body;
+    const { title, bannerImage, date, time, entryFees, description, location, activityIncludes } = req.body;
 
     // Build event object
     const eventFields = {};
     if (title) eventFields.title = title;
+    if (bannerImage !== undefined) eventFields.bannerImage = bannerImage;
+    if (date !== undefined) eventFields.date = date || null;
+    if (time !== undefined) eventFields.time = time || null;
+    if (entryFees !== undefined) eventFields.entryFees = entryFees || null;
     if (description) eventFields.description = description;
-    if (date) eventFields.date = date;
-    if (time) eventFields.time = time;
-    if (type) eventFields.type = type;
-    if (imageUrl) eventFields.imageUrl = imageUrl;
-    if (isPastEvent !== undefined) eventFields.isPastEvent = isPastEvent;
+    if (location !== undefined) eventFields.location = location || null;
+    if (activityIncludes !== undefined) eventFields.activityIncludes = activityIncludes || null;
 
     try {
         let event = await Event.findById(req.params.id);
