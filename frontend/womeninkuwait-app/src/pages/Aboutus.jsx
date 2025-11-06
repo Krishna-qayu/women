@@ -38,7 +38,20 @@ const testimonialsData = [
     {
         quote: "What I love most about Wom(en) Kuwait is the mix. One week it’s a casual coffee morning, the next it’s a workshop with an inspiring founder. It never feels forced, just natural.",
         author: "Layla, Small Business Owner"
+    },
+    {
+        quote: "Thankyou for your great efforts and achievement in bringing this concepts of women together. Best part is meeting, networking, meeting new people and learning experiences from each other.",
+        author: "Meena"
+    },
+    {
+        quote: "Thankyou for this opportunity. Got to meet friends and socialise, discuss points which was good and we also learned from each other.",
+        author: "SUGANDA"
+    },
+    {
+        quote: "Loved your activities!! Loved the ladies who showed up. Would like to see more members for interactive sessions.",
+        author: "MARYAM"
     }
+    
 ];
 const whyJoinData = [
     {

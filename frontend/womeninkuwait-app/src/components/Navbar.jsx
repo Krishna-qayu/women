@@ -27,7 +27,10 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (joinDropdownRef.current && !joinDropdownRef.current.contains(event.target)) {
+      if (
+        joinDropdownRef.current &&
+        !joinDropdownRef.current.contains(event.target)
+      ) {
         setIsJoinOpen(false);
       }
     };
@@ -50,14 +53,23 @@ export default function Navbar() {
             <img src={logo} alt="Women in Kuwait Logo" className="logo-img" />
           </Link>
           <ul className="nav-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about-us">About </Link></li>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/gallery">Gallery</Link>
+            </li>
+            <li>
+              <Link to="/about-us">About </Link>
+            </li>
             <li className="dropdown-container" ref={joinDropdownRef}>
               <div
                 className="nav-link-dropdown"
                 onClick={() => setIsJoinOpen(!isJoinOpen)}
               >
-                <li><Link to="/join">Register</Link></li>
+                <li>
+                  <Link to="/join">Register</Link>
+                </li>
                 <ChevronDown
                   size={16}
                   className={`chevron-icon ${isJoinOpen ? "open" : ""}`}
@@ -65,12 +77,18 @@ export default function Navbar() {
               </div>
               {isJoinOpen && (
                 <ul className="dropdown-menu">
-                  <li><Link to="/join">Register</Link></li>
-                  <li><Link to="/contact">Contact</Link></li>
+                  <li>
+                    <Link to="/join">Register</Link>
+                  </li>
+                  <li>
+                    <Link to="/contact">Contact</Link>
+                  </li>
                 </ul>
               )}
             </li>
-            <li><Link to="/events">Events</Link></li>
+            <li>
+              <Link to="/events">Events</Link>
+            </li>
           </ul>
           <div className="menu-icon" onClick={() => setIsOpen(true)}>
             <Menu size={26} />
@@ -88,15 +106,31 @@ export default function Navbar() {
             >
               <div className="side-menu-header">
                 <Link to="/" className="logo-link">
-                  <img src={logo} alt="Women in Kuwait Logo" className="logo-img" />
+                  <img
+                    src={logo}
+                    alt="Women in Kuwait Logo"
+                    className="logo-img"
+                  />
                 </Link>
                 <span className="close-menu" onClick={() => setIsOpen(false)}>
                   <X size={28} />
                 </span>
               </div>
               <ul>
-                <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
-                <li><Link to ="/about-us" onClick={() => setIsOpen(false)}>About</Link></li>
+                <li>
+                  <Link to="/" onClick={() => setIsOpen(false)}>
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/gallery">Gallery</Link>
+                </li>
+
+                <li>
+                  <Link to="/about-us" onClick={() => setIsOpen(false)}>
+                    About
+                  </Link>
+                </li>
                 <li className="mobile-dropdown-container">
                   <div
                     className="mobile-dropdown-toggle"
@@ -105,17 +139,31 @@ export default function Navbar() {
                     <span>Register</span>
                     <ChevronDown
                       size={20}
-                      className={`chevron-icon ${isMobileJoinOpen ? "open" : ""}`}
+                      className={`chevron-icon ${
+                        isMobileJoinOpen ? "open" : ""
+                      }`}
                     />
                   </div>
                   {isMobileJoinOpen && (
                     <ul className="mobile-dropdown-menu">
-                      <li><Link to="/join" onClick={() => setIsOpen(false)}>Register</Link></li>
-                      <li><Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link></li>
+                      <li>
+                        <Link to="/join" onClick={() => setIsOpen(false)}>
+                          Register
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/contact" onClick={() => setIsOpen(false)}>
+                          Contact
+                        </Link>
+                      </li>
                     </ul>
                   )}
                 </li>
-                <li><Link to="/events" onClick={() => setIsOpen(false)}>Events</Link></li>
+                <li>
+                  <Link to="/events" onClick={() => setIsOpen(false)}>
+                    Events
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -124,4 +172,3 @@ export default function Navbar() {
     </>
   );
 }
-

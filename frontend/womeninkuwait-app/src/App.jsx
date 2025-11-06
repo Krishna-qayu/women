@@ -10,6 +10,7 @@ import Terms from "./pages/Terms";
 import Policy from "./pages/Policy";
 import Partner from "./pages/Partner";
 import Contactus from "./pages/Contactus";
+import Gallery from "./pages/Gallery";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -20,8 +21,10 @@ export default function App() {
   return (
     <Routes>
       <Route path="/index.html" element={<Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/join" element={<Join />} />
         <Route path="/events" element={<Events />} />

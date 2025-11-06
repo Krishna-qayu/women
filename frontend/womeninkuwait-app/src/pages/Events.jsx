@@ -9,24 +9,23 @@ import coffee_and_connect from '../assets/coffee-and-connect-event.jpg';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const whyJoinData = [
-    {
-        title: 'Online Events',
-        text: 'Attend live webinars from experts, 80 minutes co-working hours, or skill swap where you share your skills with each other. Or you can just log in with a cup of coffee and chat with your new friends. ',
-    },
-    {
-        title: 'Offline Events',
-        text: 'Dress up to the nine for red carpet dinner, visit our collaborator’s pop-up market, or attend vision board parties. We’re continuously coming up with new concepts to keep you entertained.',
-    },
-    {
-        title: 'Volunteer',
-        text: 'We love to see women take the lead. If you think you would like to host any of the events or contribute in some other ways, drop us an email. ',
-    },
-    {
-        title: 'Mentorship',
-        text: 'Find mentors invested in your personal growth. Connect with them directly through our website or meet them at our specialized career-based events. ',
-    },
+  {
+    title: "Online Events",
+    text: "Attend live webinars from experts, 80 minutes co-working hours, or skill swap where you share your skills with each other. Or you can just log in with a cup of coffee and chat with your new friends. ",
+  },
+  {
+    title: "Offline Events",
+    text: "Dress up to the nine for red carpet dinner, visit our collaborator’s pop-up market, or attend vision board parties. We’re continuously coming up with new concepts to keep you entertained.",
+  },
+  {
+    title: "Volunteer",
+    text: "We love to see women take the lead. If you think you would like to host any of the events or contribute in some other ways, drop us an email. ",
+  },
+  {
+    title: "Mentorship",
+    text: "Find mentors invested in your personal growth. Connect with them directly through our website or meet them at our specialized career-based events. ",
+  },
 ];
-
 
 const EventDetailModal = ({ event, onClose }) => {
   if (!event) return null;
@@ -88,7 +87,6 @@ const EventDetailModal = ({ event, onClose }) => {
     </div>
   );
 };
-
 
 
 const Events = () => {
@@ -178,40 +176,44 @@ const Events = () => {
   return (
     <div className="events-page">
       {/* --- HERO SECTION --- */}
-        <section 
-          className="events-hero-section"
-          style={{ backgroundImage: `url(${eventsHeroImage})` }}
-        >
-          <div className="events-hero-overlay"></div>
-          <div className="events-hero-content">
-            <h1 className="events-hero-title">Upcoming Events</h1>
-            <p className="events-hero-description">
-              Take part in exclusive events that connect our members with
-              Kuwait's industry leaders, professional development resources, and
-              transformative career opportunities.
-            </p>
-          </div>
-        </section>
+      <section
+        className="events-hero-section"
+        style={{ backgroundImage: `url(${eventsHeroImage})` }}
+      >
+        <div className="events-hero-overlay"></div>
+        <div className="events-hero-content">
+          <h1 className="events-hero-title">Upcoming Events</h1>
+          <p className="events-hero-description">
+            Take part in exclusive events that connect our members with Kuwait's
+            industry leaders, professional development resources, and
+            transformative career opportunities.
+          </p>
+        </div>
+      </section>
 
       {/* --- WHY JOIN SECTION --- */}
-        <section className="why-join-section">
-          <div className="why-join-container">
-            <div className="why-join-image-wrapper">
-              <img src={joinSectionImage} alt="A member of Women Kuwait smiling" className="why-join-image" />
-            </div>
-            <div className="why-join-content">
-              <h2 className="why-join-title">Events to Join</h2>
-              <div className="why-join-grid">
-                {whyJoinData.map((card, index) => (
-                  <div className="why-join-card" key={index}>
-                    <h3>{card.title}</h3>
-                    <p>{card.text}</p>
-                  </div>
-                ))}
-              </div>
+      <section className="why-join-section">
+        <div className="why-join-container">
+          <div className="why-join-image-wrapper">
+            <img
+              src={joinSectionImage}
+              alt="A member of Women Kuwait smiling"
+              className="why-join-image"
+            />
+          </div>
+          <div className="why-join-content">
+            <h2 className="why-join-title">Events to Join</h2>
+            <div className="why-join-grid">
+              {whyJoinData.map((card, index) => (
+                <div className="why-join-card" key={index}>
+                  <h3>{card.title}</h3>
+                  <p>{card.text}</p>
+                </div>
+              ))}
             </div>
           </div>
-        </section> 
+        </div>
+      </section>
 
       {/* --- "NEXT UP" EVENT LISTING SECTION --- */}
       <section className="events-list-section">
@@ -249,8 +251,8 @@ const Events = () => {
             </div>
           )}
         </div>
-      </section> 
-      
+      </section>
+
       {/* --- PAST EVENTS SECTION --- 
       <section className="events-list-section">
         <div className="events-list-container">
@@ -272,10 +274,12 @@ const Events = () => {
       </section> */}
 
       {/* --- RENDER THE MODAL --- */}
-      <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+      <EventDetailModal
+        event={selectedEvent}
+        onClose={() => setSelectedEvent(null)}
+      />
     </div>
   );
 };
 
 export default Events;
-
